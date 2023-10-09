@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./asset/css/style.css" />
+
+    <title>Puzzle Solver</title>
+  </head>
+  <body>
+    <div id="container">
+      <div ><button class="btn" id="questionUploader" >Puzzle Uploader</button></div>
+      <div class="popup">
+        <div class="top-bar">
+          <p class="image-name"></p>
+          <span class="close-btn"></span>
+        </div>
+        <form>
+        <label><h2>Upload Puzzle Question (Puzzle size 390 X 390)</h2></label><label>
+          <input type="file" name="img" id="myFile">
+          <!--<input type="submit" id="submitBtn" value="OK">!-->
+        </form>
+      </div>
+      
+      <div id="title"><h1>Puzzle Solver</h1></div>
+      <div id="verticalImages">
+       
+
+        <div class="question"><img id="q1" src="./asset/image/img1.jpg" /></div>
+        <div class="question"><img id="q2" src="./asset/image/img2.jpg" /></div>
+        <div class="question"><img id="q3" src="./asset/image/img3.jpg" /></div>
+        <div class="question"><img id="q4" src="./asset/image/img4.jpg" /></div>
+
+        
+      </div>
+
+      <div id="container2">
+        <div id="pieceContainer"></div>
+        <div id="puzzleContainer"></div>
+        <ul id="buttons">
+          <li><button id="btnStart">Start</button></li>
+          <li><button id="btnNewgame">Continue</button></li>
+
+          <li><button id="btnFinish">Finish</button></li>
+        </ul>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script src="asset/js/script.js"></script>
+  </body>
+</html>

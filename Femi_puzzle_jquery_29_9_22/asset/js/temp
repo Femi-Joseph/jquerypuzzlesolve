@@ -1,0 +1,226 @@
+$(document).ready(function () {
+  var row = 3,
+    column = 3;
+  var pieces = "";
+  var pieces1 = "";
+  var pieces2 = "";
+  var dragId = "";
+  var dropname = "";
+  var chkStatus = 0;
+  var findSrc="";
+  var top, left;
+  var questionCount=$(".question").length;
+  alert(questionCount);
+  alert(typeof(questionCount));
+  $("#btnNewgame").hide();
+  const popup = document.querySelector('.popup');
+const closeBtn = document.querySelector('.close-btn');
+$('#questionUploader').click(function(){
+    popup.classList.toggle('active');
+    closeBtn.addEventListener('click', () => {
+
+        popup.classList.toggle('active');
+    })
+    
+});
+  //var findSrc="img1.jpg";
+  //function imageLoad(){
+  for (top = 0, i = 0; i < row; i++, top -= 128) {
+    console.log("top>>>", top, "i=", i);
+    for (j = 0, left = 0; j < column; j++, left -= 128) {
+      //pieces+="<div   class='piece'></div>";
+      // 27 nyt change pieces+=`<div  id=${i.toString()+j.toString()}`+' '+`style='background-position:  ${left}px  ${top}px;'    class='piece'></div>`;
+      // $('.piece').css('background-image', `url(./asset/image/${findSrc})`);
+      //alert(findSrc);
+      pieces +=
+        `<div  name=${i.toString() + j.toString()} id=${
+          i.toString() + j.toString()
+        }` +
+        " " +
+        `style='background-position:  ${left}px  ${top}px;'    class='piece'></div>`;
+      console.log("top=", top, "left=", left);
+    }
+  }
+  //alert(pieces);
+  $("#puzzleContainer").html(pieces); //}
+  //imageLoad();
+  $(".question img").click(function () {
+    console.log(this.id, "source=", this.src);
+    $("#pieceContainer").removeClass("successmsg");
+    $("#pieceContainer").removeClass("failmsg");
+    var temp = this.src;
+    //var matches = str.match(/(\d+)/);
+    //findSrc=temp.match(/(\d+)/);
+    findSrc=temp.slice(-8);
+    //alert(findSrc);
+    //alert(typeof(findSrc[0]));
+    //var chk=findSrc[0];
+
+    //findSrc = temp.substr(30, temp.length-1);
+    pieces = "";
+    //alert(findSrc);
+    $(".piece").css("background-image", `url(./asset/image/${findSrc})`);
+    //imageLoad();
+    /*for(top=0,i=0;i<row;i++,top-=128){
+            //console.log("top>>>",top,"i=",i);
+            for(j=0,left=0;j<column;j++,left-=128){
+                //pieces+="<div   class='piece'></div>";
+                // 27 nyt change pieces+=`<div  id=${i.toString()+j.toString()}`+' '+`style='background-position:  ${left}px  ${top}px;'    class='piece'></div>`;
+               // $('.piece').css('background-image', `url(./asset/image/${findSrc})`);
+                //alert(findSrc);
+                pieces+=`<div  name=${i.toString()+j.toString()} id=${i.toString()+j.toString()}`+' '+`style='background-position:  ${left}px  ${top}px;'    class='piece'></div>`;
+                console.log("top=",top,"left=",left);
+            }
+        }*/
+  });
+  document.querySelector("#myFile").addEventListener('change',function(){
+    console.log(this.files);
+    const reader=new FileReader();
+    reader.addEventListener("load",()=>{
+      //console.log(reader.result);
+      alert("I am here");
+      localStorage.setItem(`img${questionCount+1}`,reader.result);
+      var newQuest=`<div class="question"  ><img id=q${questionCount+1}><\div>`;
+      alert(newQuest);
+      $("#verticalImages").html(newQuest);
+      //document.querySelector(`#q${questionCount+1}`).setAttribute("src",'img5');
+      document.querySelector(`#q${questionCount+1}`).src=localStorage.getItem('img5');
+      alert('img5');
+      alert($(`#q${questionCount+1}`).getAttribute('src'));
+    
+    });
+
+    reader.readAsDataURL(this.files[0]);
+  })
+  document.addEventListener("DOMContentLoaded",()=>{
+    const imgDataUrl=localStorage.getItem("img5");
+    if(imgDataUrl){
+      var newQuest=`<div class="question" id=q${questionCount+1} ><\div>`;
+      alert(newQuest);
+      $("#verticalImages").html(newQuest);
+      document.querySelector(`#q${questionCount+1}`).setAttribute("src",img5);
+    }
+  })
+  $("#btnStart").click(function () {
+    $('.question img').off('click');
+    chkStatus = 0;
+    /*  //empty holes creating sep 27 nyt
+        //alert("I am here"+row+column);
+        for(i=0;i<row;i++){
+
+            
+            //console.log("top>>>",top,"i=",i);
+            for(j=0;j<column;j++){
+                //pieces+="<div   class='piece'></div>";
+                pieces1 += `<div id=p${i.toString()+j.toString()} style='background-image: none;' class='piece'></div>`;
+                //`<div  id=p${i.toString()+j.toString()}`+' '+`style='background-image:none;'    class='piece'></div>`;
+                //console.log("top=",top,"left=",left);
+            }
+        }
+        
+        $('#pieceContainer').html(pieces1); sep 27nyt changes*/
+    for (i = 0, x = 2; i < row; i++, x = x - 1) {
+      for (j = 0, y = 2; j < column; j++, y = y - 1) {
+        //clone=$(`#${x.toString()}${y.toString()}`).clone();
+        //alert(clone);
+        //$(`#p${i.toString()}+${j.toString()}`).append($(clone));
+        //if want uncomment
+        //$(`#p${i.toString()}${j.toString()}`).append($(`#${x.toString()}${y.toString()}`));
+        //28/7 strat here(1)
+        $(`#${x.toString()}${y.toString()}`).addClass("dragablePiece");
+        //till here
+        $(`#pieceContainer`).append($(`#${x.toString()}${y.toString()}`));
+        $(".dragablePiece").draggable();
+      }
+    }
+    pieces2 = "";
+    for (i = 0; i < row; i++) {
+      //console.log("top>>>",top,"i=",i);
+      for (j = 0; j < column; j++) {
+        //pieces+="<div   class='piece'></div>";
+        pieces2 += `<div name=${
+          i.toString() + j.toString()
+        } style='background-image: none;' class='piece dropable'></div>`;
+        //`<div  id=p${i.toString()+j.toString()}`+' '+`style='background-image:none;'    class='piece'></div>`;
+        //console.log("top=",top,"left=",left);
+      }
+    }
+
+    $("#puzzleContainer").html(pieces2);
+    $(".dropable").droppable();
+    $(".dropable").droppable({
+      drop: function (event, ui) {
+        var dragableElement = ui.draggable;
+        //alert(ui.draggable.prop('id'));
+        dragId = ui.draggable.prop("id");
+        //alert(dragId);
+        var droppedOn = $(this);
+        dropname = $(this).attr("name");
+        //alert(dropname)
+        //alert($(this).attr('name'));
+
+        droppedOn.addClass("piecePresent");
+        $(dragableElement)
+          .addClass("droppedPiece")
+          .css({
+            top: 0,
+            left: 0,
+            position: "relative",
+          })
+          .appendTo(droppedOn);
+
+        if (dragId === dropname) {
+            $(this).removeClass("fail");
+          $(this).addClass("success");
+        } else {
+            $(this).removeClass("success");
+          $(this).addClass("fail");
+        }
+      },
+    });
+  });
+  $("#btnFinish").click(function () {
+    //alert($('.success').length);
+    $("#btnNewgame").show();
+    var chkStatus = $(".success").length;
+
+    var chkFail=$(".fail").length;
+    alert(chkStatus+""+chkFail);
+    /*if (chkStatus >= 9 ) {
+      $("#pieceContainer").empty();
+      $("#pieceContainer").addClass("successmsg");
+      $("#btnStart").hide();
+      $("#btnFinish").hide();
+    }  else if(chkFail>0) {
+      $("#pieceContainer").empty();
+      $("#pieceContainer").addClass("failmsg");
+      $("#btnStart").hide();
+      $("#btnFinish").hide();
+    }*/
+    if (chkStatus === 9  ) {
+        /*$("#pieceContainer").empty();
+        $("#pieceContainer").addClass("failmsg");
+        $("#btnStart").hide();
+        $("#btnFinish").hide();*/
+        $("#pieceContainer").empty();
+        $("#pieceContainer").addClass("successmsg");
+        $("#btnStart").hide();
+        $("#btnFinish").hide();
+      }  else {
+        $("#pieceContainer").empty();
+        $("#pieceContainer").addClass("failmsg");
+        $("#btnStart").hide();
+        $("#btnFinish").hide();
+        /*$("#pieceContainer").empty();
+        $("#pieceContainer").addClass("successmsg");
+        $("#btnStart").hide();
+        $("#btnFinish").hide();*/
+       
+
+      }
+  });
+  $("#btnNewgame").click(function () {
+    location.reload();
+    $('.question img').on('click');
+  });
+});
